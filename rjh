@@ -1,0 +1,28 @@
+//     <Onboarding
+//     showSkip={false}
+//     showNext={false}
+//     containerStyles={{ backgroundColor: "#FFe5D5"}}
+//     pages={[
+//       {
+//         backgroundColor: '#fff',
+//         image: <Image source={require('../../assets/Group4.png')} style={styles.image} />,
+//         title: 'Welcome To htraction ',
+//         subtitle: 'Lorem Ipsum is simply dummy text of the  and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when ',
+//         image1: <Image source={require('../../assets/Progressbutton1.png')} style={styles.image1} />,
+//       },
+//       {
+//         backgroundColor: '#fff',
+//         image: <Image source={require('../../assets/Group4.png')} style={styles.image} />,
+//         title: 'Welcome To htraction ',
+//         subtitle: 'Lorem Ipsum is simply dummy text of the  and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when ',
+//         image1: <Image source={require('../../assets/Progressbutton1.png')} style={styles.image1} />,
+//       },
+//       {
+//         backgroundColor: '#fff',
+//         image: <Image source={require('../../assets/Group4.png')}  style={styles.image} />,
+//         title: 'Welcome To htraction ',
+//         subtitle: 'Lorem Ipsum is simply dummy text of the  and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when ',
+//         image1: <Image source={require('../../assets/Progressbutton3.png')} style={styles.image1}  />,
+//       },
+//     ]}
+//   />
