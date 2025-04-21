@@ -103,7 +103,7 @@ const PDFCards = () => {
             </View>
             {/* <Text style={styles.modalTitle}>Contact Details Submitted!</Text> */}
             <Text style={styles.modalMessage1}>
-              Do wish to delete this document?{' '}
+              Do wish to delete this document?
             </Text>
             <Text style={styles.modalMessage2}>
               Deleting this document will permanently removed.

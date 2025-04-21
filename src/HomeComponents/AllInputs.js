@@ -61,12 +61,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // paddingVertical: 2,
     paddingHorizontal: 12,
+    backgroundColor: '#FFF'
   },
   txt: {
     fontSize: 16,
     fontWeight: '500',
     lineHeight: 26,
-    color: '#383838'
+    color: '#605F5F'
   },
   inputTxt: {
     fontSize: 16,

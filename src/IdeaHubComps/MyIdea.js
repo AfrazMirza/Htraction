@@ -11,8 +11,10 @@ import Details from '../HomeComponents/Details';
 import IdeaCards from './IdeaCards';
 import IdeaRatingsCart from './IdeaRatingsCart';
 import AllInputs from '../HomeComponents/AllInputs';
+import { useNavigation } from '@react-navigation/native';
 
 const MyIdea = () => {
+const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View>
@@ -90,7 +92,10 @@ const MyIdea = () => {
             </Text>
 
             {/* Close Button */}
-            <TouchableOpacity style={styles.closeButton}>
+            <TouchableOpacity
+             onPress={() => {
+       navigation.navigate('CreateNewIdea');
+     }} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Get Started</Text>
             </TouchableOpacity>
           </View>

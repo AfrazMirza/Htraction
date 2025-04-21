@@ -25,7 +25,7 @@ import ComponyProfile from '../Screens1/ComponyProfile';
 import Notification from '../Screens/Notification';
 import EditIdeaDetails from '../IdeaHubScreens.js/EditIdeaDetails';
 import GroupChats from '../IdeaHubScreens.js/GroupChats';
-import EditIdeaDetails1 from '../IdeaHubScreens.js/EditIdeaDetails1';
+import CreateNewIdea from '../IdeaHubScreens.js/CreateNewIdea';
 
 // Tab Screens
 import IdeaHub from '../Screens2/IdeaHub';
@@ -52,6 +52,10 @@ const BottomTabs = () => {
           borderTopWidth: 2,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
+          borderLeftColor: '#FFE5D5',
+    borderLeftWidth: 0.2,
+    borderRightColor: '#FFE5D5',
+    borderRightWidth: 0.2,
           // borderTopColor: '#FFE5D5',
           // elevation: 0,
           // position: 'absolute',
@@ -320,7 +324,7 @@ const AppNavigator = () => {
 
         {/* Idea hub Screen  */}
         <Stack.Screen name="EditIdeaDetails" component={EditIdeaDetails} />
-        <Stack.Screen name="EditIdeaDetails1" component={EditIdeaDetails1} />
+        <Stack.Screen name="CreateNewIdea" component={CreateNewIdea}/>
         {/* <Stack.Screen name='IdeaHub' component={IdeaHub}/> */}
         <Stack.Screen name="GroupChats" component={GroupChats} />
         {/* <Stack.Screen name="Setting" component={Setting} /> */}

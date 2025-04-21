@@ -17,16 +17,16 @@ const SharedIdea = () => {
 
       <View style={{gap: 16}}>
         <View style={styles.container1}>
-          <IdeaCards />
-          <IdeaCards />
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
         </View>
         <View style={styles.container1}>
-          <IdeaCards />
-          <IdeaCards />
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
         </View>
         <View style={styles.container1}>
-          <IdeaCards />
-          <IdeaCards />
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
+          <IdeaCards title1 = 'Draft' title2 = 'View Access'/>
         </View>
       </View>
     </View>
