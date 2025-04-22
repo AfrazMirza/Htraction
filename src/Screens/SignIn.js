@@ -29,23 +29,25 @@ const SignIn = ({navigation}) => {
 
   const handleSignIn = () => {
     let isValid = true;
+    setEmailError('');
+    setPasswordError('');
 
     // Validate email
     if (email.trim() === '') {
-      setEmailError(true);
+      setEmailError('Please enter email');
       isValid = false;
-    } else {
-      setEmailError(false);
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError('Please enter a valid email (e.g., user@example.com)');
+      isValid = false;
     }
 
     // Validate password
     if (password.trim() === '') {
-      setPasswordError(true);
+      setPasswordError('Password is incorrect');
       isValid = false;
     } else {
-      setPasswordError(false);
+      setPasswordError('');
     }
-
     // If both valid, navigate
     if (isValid) {
       // navigation.navigate('DrawerScreens');
@@ -72,7 +74,11 @@ const SignIn = ({navigation}) => {
           title="Email Id"
           showError = {(text)=> setEmail(text)}
         />
-        {emailError ? <Text style={styles.errorTxt}>Please Enter Email</Text> : null}
+        {emailError ? (
+          <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>
+            {emailError}
+          </Text>
+        ) : null}
         <IdPass
           source={require('../../assets/password.png')}
           width={25}
@@ -81,7 +87,11 @@ const SignIn = ({navigation}) => {
           showError = {(text)=> setPassword(text)}
           isPassword={true}
         />
-        {passwordError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>Please Enter Password</Text> : null}
+         {passwordError ? (
+          <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>
+            {passwordError}
+          </Text>
+        ) : null}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('ForgotPassword');

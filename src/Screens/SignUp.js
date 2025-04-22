@@ -26,36 +26,56 @@ const SignUp = ({navigation}) => {
   
   const handleSignUp = () => {
     let isValid = true
+    setNameError('');
+    setEmailError('');
+    setPasswordError('');
+    setConfirmPass('');
 
     if (name.trim() === '') {
-      setNameError(true)
+      setNameError('Please enter a name')
       isValid = false;
     }else{
       setNameError(false)
     }
 
     if (email.trim() === '') {
-      setEmailError(true)
+      setEmailError('Please enter email')
       isValid = false;
-    }else{
-      setEmailError(false)
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError('Please enter a valid email (e.g., user@example.com)');
+      isValid = false;
     }
 
     if (password.trim() === '') {
-      setPasswordError(true)
+      setPasswordError('Please enter password')
       isValid = false;
-    }else{
-      setPasswordError(false)
+    } else {
+      // Check password strength
+      const hasUpperCase = /[A-Z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecialChar = /[!@#$%&*]/.test(password);
+      const isLongEnough = password.length >= 8;
+      
+      let errorMessages = [];
+      
+      if (!isLongEnough) errorMessages.push('at least 8 characters');
+      if (!hasUpperCase) errorMessages.push('one uppercase letter');
+      if (!hasNumber) errorMessages.push('one number');
+      if (!hasSpecialChar) errorMessages.push('one special character (!@#$%&*)');
+      
+      if (errorMessages.length > 0) {
+        setPasswordError(`Password must contain: ${errorMessages.join(', ')}`);
+        isValid = false;
+      }
     }
 
     if (confirmPass.trim() === '') {
-      setConfirmPassError(true)
+      setConfirmPassError('Please confirm your password');
       isValid = false;
-    }else{
-      setConfirmPassError(false)
-    }
-
-
+  } else if (password !== confirmPass) {
+      setConfirmPassError('Passwords do not match');
+      isValid = false;
+  }
     if(isValid){
       navigation.navigate('MainTabs')
     }
@@ -82,7 +102,7 @@ const SignUp = ({navigation}) => {
             title="Full Name"
             showError={(text)=> setName(text)}
           />
-          {nameError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>Please Enter Your Name</Text> : null}
+          {nameError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>{nameError}</Text> : null}
           <IdPass
             source={require('../../assets/email.png')}
             width={25}
@@ -90,7 +110,7 @@ const SignUp = ({navigation}) => {
             title="Email Id"
             showError={(text)=> setEmail(text)}
           />
-          {emailError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>Please Enter Email</Text> : null}
+          {emailError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>{emailError}</Text> : null}
           <IdPass
             source={require('../../assets/password.png')}
             width={25}
@@ -99,7 +119,7 @@ const SignUp = ({navigation}) => {
             showError={(text)=>setPassword(text)}
             isPassword={true}
           />
-          {passwordError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>Please Enter Password</Text> : null}
+          {passwordError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>{passwordError}</Text> : null}
           <IdPass
             source={require('../../assets/password.png')}
             width={25}
@@ -108,7 +128,7 @@ const SignUp = ({navigation}) => {
             showError={(text)=>setConfirmPass(text)}
             isPassword={true}
           />
-          {confirmPassError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>Confirm Your Password</Text> : null}
+          {confirmPassError ? <Text style={[styles.errorTxt, {color: theme === 'light' ? '#FA4616' : '#FF5722'}]}>{confirmPassError}</Text> : null}
           <AllBtn
             title="Sign Up"
             onTab={handleSignUp}
@@ -118,7 +138,7 @@ const SignUp = ({navigation}) => {
           <Google />
           <Text style={[styles.text, {color: theme === 'light' ? '#333333' : '#E0E0E0'}]}>
             Already have an account?
-            <Text style={{color: theme === 'light' ?'#FA4616' : '#FF5722', fontSize: 12}}>SIGN IN</Text>
+            <Text onPress={()=> {navigation.navigate('SignIn')}} style={{color: theme === 'light' ?'#FA4616' : '#FF5722', fontSize: 12}}>SIGN IN</Text>
           </Text>
         </View>
       </ScrollView>

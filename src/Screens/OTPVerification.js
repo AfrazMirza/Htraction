@@ -5,7 +5,8 @@ import IdPass from '../components/IdPass';
 import AllBtn from '../components/AllBtn';
 import {OtpInput} from 'react-native-otp-entry';
 
-const OTPVerification = ({navigation}) => {
+const OTPVerification = ({route, navigation}) => {
+  const {userEmail} =route.params;
   return (
     <ScrollView>
       <View style={styles.view1}>
@@ -17,8 +18,8 @@ const OTPVerification = ({navigation}) => {
         <View style={styles.view1V1}>
           <Text style={styles.V2Txt1}>Verify your account</Text>
           <Text style={styles.V2Txt2}>
-            Enter 5 digits verification code we have send to{' '}
-            <Text style={{color: '#FA4616'}}>htraction12@gmail.com</Text>
+            Enter 5 digits verification code we have send to
+            <Text style={{color: '#FA4616'}}> {userEmail}</Text>
           </Text>
           <OtpInput
             focusColor="#FA4616"
@@ -46,7 +47,7 @@ const OTPVerification = ({navigation}) => {
           }}
         />
         <Text style={styles.text}>
-          If you don't receive OTP?{' '}
+          If you don't receive OTP?
           <Text style={{color: '#FA4616', fontSize: 12}}>Resend OTP</Text>
         </Text>
       </View>

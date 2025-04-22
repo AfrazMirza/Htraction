@@ -39,7 +39,7 @@ const About = () => {
               <Text style={styles.allTxt1}>Find Me</Text>
               <Image
                 style={{width: 18, height: 18}}
-                source={require('../../assets/linkedin.png')}
+                source={require('../../assets/linkedin.jpg')}
               />
             </View>
           </View>

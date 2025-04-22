@@ -1,11 +1,32 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import AllBtn from '../components/AllBtn';
 import IdPass from '../components/IdPass';
 import {ScrollView} from 'react-native-gesture-handler';
 import BackArrow from '../components/BackArrow';
 
 const ForgotPassword = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const handleForgotPass = () => {
+    let isValid = true;
+    setEmailError('');
+
+    // Validate email
+    if (email.trim() === '') {
+      setEmailError('Please enter email');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError('Please enter a valid email (e.g., user@example.com)');
+      isValid = false;
+    }
+    // If this valid, navigate
+    if (isValid) {
+      // navigation.navigate('DrawerScreens');
+      // navigation.navigate('MyProfile');
+      navigation.navigate('OTPVerification', { userEmail: email });
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.view1}>
@@ -29,13 +50,10 @@ const ForgotPassword = ({navigation}) => {
           width={25}
           height={25}
           title="Email Id"
+          showError={text => setEmail(text)}
         />
-        <AllBtn
-          title="Send OTP"
-          onTab={() => {
-            navigation.navigate('OTPVerification');
-          }}
-        />
+        {emailError ? <Text style={styles.errorTxt}>{emailError}</Text> : null}
+        <AllBtn title="Send OTP" onTab={handleForgotPass} />
       </View>
     </ScrollView>
   );
@@ -77,4 +95,8 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginBottom: 78,
   },
+  errorTxt: {
+    color: '#FA4616', 
+    marginHorizontal: 15
+  }
 });
