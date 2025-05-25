@@ -1,117 +1,31 @@
-import {Alert, ScrollView, Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import AllBtn from '../components/AllBtn';
 import IdPass from '../components/IdPass';
-// import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import BackArrow from '../components/BackArrow';
-import { supabase } from '../lib/supabase';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  // const handleForgotPass = async () => {
-  //   // let isValid = true;
-  //   setEmailError('');
-  //   setLoading(true);
-
-  //   // Validate email
-  //   if (!email.trim()) {
-  //     setEmailError('Please enter email');
-  //     isValid = (false);
-  //     return;
-  //   } if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-  //     setEmailError('Please enter a valid email (e.g., user@example.com)');
-  //     isValid = (false);
-  //     return;
-  //   }
-  //   // If this valid, navigate
-  //   // if (isValid) {
-  //   //   // navigation.navigate('DrawerScreens');
-  //   //   // navigation.navigate('MyProfile');
-  //   //   navigation.navigate('OTPVerification', { userEmail: email });
-  //   // }
-
-  //   // if (isValid) {
-  //   //   try {
-  //   //     const { error } = await supabase.auth.signInWithOtp(email.trim(), {
-  //   //       redirectTo: 'h-traction://reset-password', // You need to configure deep linking for this
-  //   //     });
-
-  //   //     if (error) {
-  //   //       throw error;
-  //   //     }
-
-  //   //     Alert.alert('Email Sent', 'Check your email for the password reset link',
-  //   //       [
-  //   //         {
-  //   //           text: 'OK',
-  //   //           onPress: () => navigation.navigate('OTPVerification', { userEmail: email }),
-  //   //         },
-  //   //       ]
-  //   //     );
-  //   //   } catch (error) {
-  //   //     Alert.alert('Error', error.message);
-  //   //   } finally {
-  //   //     setLoading(false);
-  //   //   }
-  //   // }
-     
-  // if (isValid) {
-  //   try {
-  //     setLoading(true);
-  //     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-  //       redirectTo: 'h-traction://reset-password'
-  //     });
-
-  //     if (error) throw error;
-  //     Alert.alert('Email Sent', 'Password reset link sent');
-      
-  //   } catch (error) {
-  //     Alert.alert('Error', error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-  const handleForgotPass = async () => {
+  const handleForgotPass = () => {
+    let isValid = true;
     setEmailError('');
-    setLoading(true);
 
     // Validate email
-    if (!email.trim()) {
+    if (email.trim() === '') {
       setEmailError('Please enter email');
-      setLoading(false);
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setEmailError('Please enter a valid email (e.g., user@example.com)');
-      setLoading(false);
-      return;
+      isValid = false;
     }
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email.trim(),
-        options: {
-          shouldCreateUser: false,
-        }
-      });
-
-      if (error) throw error;
-
-      // Navigate to OTP verification on success
-      navigation.navigate('OTPVerification', { 
-        userEmail: email.trim(),
-        verificationType: 'recovery' 
-      });
-
-    } catch (error) {
-      Alert.alert('Error', error.message || 'Failed to send OTP');
-    } finally {
-      setLoading(false);
+    // If this valid, navigate
+    if (isValid) {
+      // navigation.navigate('DrawerScreens');
+      // navigation.navigate('MyProfile');
+      navigation.navigate('OTPVerification', { userEmail: email });
     }
-  
   };
   return (
     <ScrollView>
@@ -120,7 +34,6 @@ const ForgotPassword = ({navigation}) => {
           source={require('../../assets/backArrow.png')}
           width={15}
           height={15}
-          onPress={() => navigation.goBack()}
         />
         <Image style={styles.img} source={require('../../assets/logo.png')} />
         <View style={styles.view1V1}>
@@ -138,14 +51,9 @@ const ForgotPassword = ({navigation}) => {
           height={25}
           title="Email Id"
           showError={text => setEmail(text)}
-          onChangeText={setEmail}
-          value={email}
         />
         {emailError ? <Text style={styles.errorTxt}>{emailError}</Text> : null}
-        <AllBtn 
-    title={loading ? "Sending..." : "Send OTP"} 
-    onTab={handleForgotPass} 
-    disabled={loading} />
+        <AllBtn title="Send OTP" onTab={handleForgotPass} />
       </View>
     </ScrollView>
   );

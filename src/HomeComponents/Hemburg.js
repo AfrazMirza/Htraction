@@ -69,6 +69,7 @@ const Hemburg = () => {
     navigation.openDrawer();
     console.log('zdjdj')
   };
+  
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container1}>

@@ -1,13 +1,16 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {Image, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
 import { supabase } from '../lib/supabase';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import AllInputs from '../HomeComponents/AllInputs';
 
 const Profile = () => {
   const navigation = useNavigation();
   // const [userName, setUserName] = useState('Guest');
   const [profileData, setProfileData] = useState({});
-
+  const panelRef = useRef(null)
+    const [deleteProfile, setDeleteProfile] = useState(false);
   // useEffect(() => {
   //   const fetchProfile = async () => {
   //     const { data: { user } } = await supabase.auth.getUser();
@@ -99,14 +102,53 @@ const Profile = () => {
     return unsubscribe;
   }, [navigation]);
 
+  const EditProfile = ({panelRef}) => {
+    return (
+      <View>
+        <View style={styles.editProfileContainer}>
+          <TouchableOpacity onPress={() => panelRef.current.close()}>
+            <Image
+              style={{width: 14, height: 14}}
+              source={require('../../assets/cross.png')}
+            />
+          </TouchableOpacity>
+          <Text style={{fontSize: 18, fontWeight: '600'}}>Upload Profile</Text>
+        </View>
+        <View style={{paddingVertical: 15, paddingHorizontal: 15}}>
+          <TouchableOpacity style={{flexDirection: 'row', paddingVertical: 10, alignItems: 'center'}}>
+          <Image style={{width: 22.5, height: 18}} source={require('../../assets/uploadProfile.png')}/>
+          <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 26, color: '#383838', paddingLeft: 5}}>View or edit profile photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setDeleteProfile(true)} style={{flexDirection: 'row', paddingVertical: 10, alignItems: 'center'}}>
+            <Image style={{width: 22, height: 22}} source={require('../../assets/deleteProfile.png')}/>
+          <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 26, color: '#383838', paddingLeft: 5}}>Delete profile</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+  
   return (
     <View style={styles.container}>
       <Text style={styles.containerTxt}>My Profile</Text>
       <View style={styles.container1}>
-        <Image
+       <View style={{ position: 'relative', width: 100, height: 101 }}>
+       <Image
           style={{width: 100, height: 101}}
-          source={require('../../assets/KumarRohit.png')}
+          source={require('../../assets/profile1.png')}
         />
+        <TouchableOpacity    style={{
+      position: 'absolute',
+      bottom: 5,
+      right: 2,
+      backgroundColor: '#FA4616',
+      padding: 6,
+      borderRadius: 20,
+    }}
+    onPress={() => panelRef.current.open()}>
+          <Image style={{width: 12, height: 12}} source={require('../../assets/editProfile.png')}/>
+        </TouchableOpacity>
+       </View>
         <View style={styles.container2}>
           <View>
           <Text style={{fontSize: 18, fontWeight: '600', color: '#FA4616'}}>
@@ -150,6 +192,56 @@ const Profile = () => {
           <Text style={styles.txt2}>Ideas</Text>
         </TouchableOpacity>
       </View>
+      <RBSheet
+          ref={panelRef}
+          height={185} // Adjust height as needed
+          openDuration={250}
+          closeOnDragDown={false}
+          customStyles={{
+            container: { borderTopLeftRadius: 15, borderTopRightRadius: 15,  },
+          }}
+        >
+          {/* <Text style={{ paddingVertical: 20 }}>Some random content</Text> */}
+          <EditProfile panelRef={panelRef}/>
+        </RBSheet>
+
+         {/*this model can show the popup on the screen wen the contact button is triggured every time*/}
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={deleteProfile}
+                onRequestClose={() => setDeleteProfile(false)}
+                >
+                <View style={styles.modalBackground}>
+                  <View style={styles.modalContainer}>
+                      <Image
+                        style={{width: 64, height: 64, marginBottom: 20,}}
+                        source={require('../../assets/redAlert.png')}
+                      />
+                    {/* </View> */}
+                    {/* <Text style={styles.modalTitle}>Contact Details Submitted!</Text> */}
+                    <Text style={styles.modalMessage}>
+                    Are you sure you want to delete profile image?
+                    </Text>
+        
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        // backgroundColor: 'lime',
+                        gap: 10,
+                        justifyContent: 'space-between',
+                      }}>
+                      {/* Close Button */}
+                      <TouchableOpacity onPress={() => setDeleteProfile(false)} style={styles.cancleBtn}>
+                        <Text style={styles.cancleBtnTxt}>Cancle</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.deleteBtn}>
+                        <Text style={styles.deleteBtnTxt}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
     </View>
   );
 };
@@ -221,5 +313,72 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FA4616',
     textAlign: 'center',
+  },
+  editProfileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
+    paddingHorizontal: 12,
+    paddingTop: 20,
+    paddingBottom: 18,
+    backgroundColor: '#FFE5D5',
+  },
+  // css model for delete the profile image
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // ✅ Semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5, // ✅ Shadow for Android
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 26,
+    color: '#333333',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cancleBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  cancleBtnTxt: {
+    color: '#FA4616',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  deleteBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    backgroundColor: '#FA4616',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  deleteBtnTxt: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

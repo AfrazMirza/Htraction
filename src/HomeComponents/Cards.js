@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const Cards = () => {
   const profiles = [
@@ -96,7 +97,9 @@ const Cards = () => {
 
 const [modalVisible, setModalVisible] = useState(false); 
   const [activeOption, setActiveOption] = useState(null);
-
+  const [isThumbActive, setIsThumbActive] = useState(false);
+  const [isSaveActive, setIsSaveActive] = useState(false);
+  const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
       <FlatList
@@ -105,17 +108,21 @@ const [modalVisible, setModalVisible] = useState(false);
         renderItem={({item}) => (
           <View style={styles.card1}>
             <View style={styles.card2}>
-              <Image style={styles.profileImage} source={item.profile} />
+             <TouchableOpacity onPress={()=> navigation.navigate('UserProfile')} style={{flexDirection: 'row'}}>
+             <Image style={styles.profileImage} source={item.profile} />
               <View style={styles.textContainer}>
                 <Text style={styles.heading}>{item.heading}</Text>
                 <Text style={styles.subheading}>{item.subheading}</Text>
               </View>
-              <TouchableOpacity style={styles.followButton}>
+             </TouchableOpacity>
+             <View style={{flexDirection: 'row'}}>
+             <TouchableOpacity style={styles.followButton}>
                 <Text style={styles.followText}>{item.button}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Image style={{width: 20, height: 20}} source={item.dots} />
               </TouchableOpacity>
+             </View>
             </View>
             <View>
               <Image style={styles.mainImage} source={item.mainImage} />
@@ -138,23 +145,28 @@ const [modalVisible, setModalVisible] = useState(false);
                 }}>
                 <View
                   style={styles.sameStyles}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={[
+        styles.button,
+        isThumbActive && styles.buttonActive
+      ]} onPress={() => setIsThumbActive(!isThumbActive)}>
                     <Image
-                      style={{width: 14, height: 14}}
+                      style={[{width: 14, height: 14.5}, isThumbActive && {tintColor: '#FA4616'}]}
                       source={item.thumb}
                     />
                   </TouchableOpacity>
-                  <Text style={{fontWeight: '400', fontSize: 10}}>20K</Text>
+                  <Text style={{fontWeight: '600', fontSize: 10, paddingHorizontal: 3, paddingVertical: 5, color: '#706F6E'}}>20K</Text>
                 </View>
                 <View
                   style={styles.sameStyles}>
                   <TouchableOpacity>
+                  {/* fontSize: 11,
+                  fontWeight: '600', */}
                     <Image
                       style={{width: 14, height: 14}}
                       source={item.message}
                     />
                   </TouchableOpacity>
-                  <Text style={{fontWeight: '400', fontSize: 10}}>20K</Text>
+                  <Text style={{fontWeight: '600', fontSize: 10, paddingHorizontal: 5, paddingVertical: 5, color: '#706F6E'}}>20K</Text>
                 </View>
                 <View
                   style={styles.sameStyles}>
@@ -164,12 +176,17 @@ const [modalVisible, setModalVisible] = useState(false);
                       source={item.share}
                     />
                   </TouchableOpacity>
-                  <Text style={{fontWeight: '400', fontSize: 10}}>Share</Text>
+                  <Text style={{fontWeight: '600', fontSize: 10, paddingHorizontal: 5, paddingVertical: 5, color: '#706F6E'}}>Share</Text>
                 </View>
               </View>
               <View>
-                <TouchableOpacity>
-                  <Image style={{width: 14, height: 14}} source={item.save} />
+                <TouchableOpacity  style={[
+        styles.button,
+        isSaveActive && styles.buttonActive
+      ]}
+      onPress={() => setIsSaveActive(!isSaveActive)}>
+                  <Image style={[{width: 14, height: 14}, isSaveActive && {tintColor: '#FA4616'}]} source={item.save}  />
+                  <Text style={{fontWeight: '600', fontSize: 10, paddingLeft: 5, color: '#706F6E'}}>Save</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -268,7 +285,8 @@ const styles = StyleSheet.create({
   },
   card1: {
     // flexDirection: 'row',
-    alignItems: 'center',
+    flex: 1,
+    // alignItems: 'center',
     backgroundColor: '#fff',
     padding: 10,
     borderRadius: 10,
@@ -283,9 +301,11 @@ const styles = StyleSheet.create({
     // elevation: 3,
   },
   card2: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: '#fff',
+    // backgroundColor: 'red',
+    width: '76%',
     // padding: 10,
     // borderRadius: 10,
     // marginVertical: 5,
@@ -330,6 +350,19 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 12,
     paddingVertical: 7,
+  },
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    backgroundColor: 'transparent',
+    borderRadius: 0,
+  },
+  buttonActive: {
+    backgroundColor: '#FFE5D5',
+    borderRadius: 15,
   },
   modalBackground: {
     flex: 1,

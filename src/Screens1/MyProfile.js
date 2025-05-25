@@ -14,7 +14,7 @@ const MyProfile = ({navigation}) => {
    <ScrollView style={{flex: 1}}>
     <SearchTab/>
     <Profile/>
-    <Tabs/>
+    <Tabs screenType="MyProfile"/>
     {/* <About/> */}
     {/* <WorkExp title='Work Experience'/>
     <WorkExp title='Education'/> */}

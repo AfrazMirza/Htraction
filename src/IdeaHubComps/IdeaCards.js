@@ -110,10 +110,12 @@ const IdeaCards = ({title1, title2}) => {
                   ]}
                   onPressIn={() => setActiveOption('view')}
                   onPressOut={() => setActiveOption(null)}
-                  onPress={() => {
-                    setModalVisible(false);
-                    // Handle View
-                  }}
+                  // onPress={() => {
+                  //   setModalVisible(false);
+                  //   // Handle View
+                  // }}
+                  onPress={()=> navigation.navigate('EditIdeaDetails')}
+                  
                   activeOpacity={1}>
                   <Text>View Idea</Text>
                 </TouchableOpacity>
@@ -145,7 +147,7 @@ const IdeaCards = ({title1, title2}) => {
                     // Handle evaluate
                   }}
                   activeOpacity={1}>
-                  <Text>Share to evaluate</Text>
+                  <Text>Delete</Text>
                 </TouchableOpacity>
               {/* </View>
             </TouchableOpacity> */}

@@ -10,8 +10,10 @@ import React, {useRef, useState} from 'react';
 import IdeaDetailsTab from './IdeaDetailsTab';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import ShareIdeaSheet from './ShareIdeaSheet';
+import { useNavigation } from '@react-navigation/native';
 
 const IdeaDetails = () => {
+  const navigation = useNavigation();
   const [show, setShow] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const panelRef = useRef(null);
@@ -34,15 +36,17 @@ const IdeaDetails = () => {
             style={styles.subContainer2Btn}>
             <Text style={styles.subContainer2BtnTxt}>Validate this idea</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          {/* <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={{width: 20.9, height: 18, marginHorizontal: 10}}
               source={require('../../assets/share.png')}
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={() => {
+       navigation.navigate('CreateNewIdea', { mode: 'edit' });
+     }}>
             <Image
-              style={{width: 14, height: 14}}
+              style={{width: 20, height: 20}}
               source={require('../../assets/EditGrey.png')}
             />
           </TouchableOpacity>
@@ -87,11 +91,11 @@ const IdeaDetails = () => {
               {/* Close Button */}
               <TouchableOpacity
                 onPress={() => setShow(false)}
-                style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Cancle</Text>
+                style={styles.cancleBtn}>
+                <Text style={styles.cancleBtnTxt}>Cancle</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Delete</Text>
+              <TouchableOpacity style={styles.deleteBtn}>
+                <Text style={styles.deleteBtnTxt}>Confirm</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -170,7 +174,9 @@ const styles = StyleSheet.create({
   subContainer2: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
     justifyContent: 'space-around',
+    // backgroundColor: 'green'
   },
   subContainer2Btn: {
     borderColor: '#FA4616',
@@ -243,14 +249,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 60,
   },
-  closeButton: {
+  cancleBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  cancleBtnTxt: {
+    color: '#FA4616',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  deleteBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
     backgroundColor: '#FA4616',
     paddingVertical: 12,
     paddingHorizontal: 35,
     borderRadius: 10,
   },
-  closeButtonText: {
-    color: '#fff',
+  deleteBtnTxt: {
+    color: '#FFF',
     fontSize: 16,
     fontWeight: '600',
   },

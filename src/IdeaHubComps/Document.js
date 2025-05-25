@@ -33,12 +33,12 @@ const Document = () => {
           <PDFCards />
           <PDFCards />
         </View>
-         <View
+         {/* <View
           style={styles.pfdCardsView}>
           <PDFCards />
           <PDFCards />
           <PDFCards />
-        </View>
+        </View> */}
       </View>
       <View style={styles.uploadButtonContainer}>
         <TouchableOpacity

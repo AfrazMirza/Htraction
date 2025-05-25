@@ -145,7 +145,7 @@ const About = () => {
         </View>
       </View>
       {/* <WorkExp title="Work Experience" experience="Add Experience" /> */}
-      <WorkExp title="Education" experience="Add Education" />
+      {/* <WorkExp title="Education" experience="Add Education" /> */}
     </View>
   );
 };

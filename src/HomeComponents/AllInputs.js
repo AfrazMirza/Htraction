@@ -1,22 +1,28 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 
-const AllInputs = ({title, input, customeStyle, isMultiline=false}) => {
+const AllInputs = ({title, input, customeStyle, isMultiline = false}) => {
+  const [text, setText] = useState('');
   return (
-    <View style={{ marginBottom: 5,}}>
-      <View
-        style={styles.container1}>
+    <View style={{marginBottom: 5}}>
+      <View style={styles.container1}>
         <Text style={styles.txt}>{title}</Text>
       </View>
       <View style={styles.container2}>
         <TouchableOpacity style={styles.btn}>
           <TextInput
-          style={[styles.inputTxt, customeStyle, isMultiline && styles.multilineInput]}
+            style={[
+              styles.inputTxt,
+              customeStyle,
+              isMultiline && styles.multilineInput,
+            ]}
             placeholder={input}
             maxLength={isMultiline ? 500 : 25}
-            multiline= {isMultiline}
+            multiline={isMultiline}
             placeholderTextColor={'#888888'}
+            value={text}
+            onChangeText={setText}
           />
         </TouchableOpacity>
       </View>
@@ -37,7 +43,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     // justifyContent: 'center',
     // alignItems: 'center',
-    // backgroundColor: 'red', 
+    // backgroundColor: 'red',
 
     // width: '95%',
     // alignSelf: 'center',
@@ -61,19 +67,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // paddingVertical: 2,
     paddingHorizontal: 12,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   txt: {
     fontSize: 16,
     fontWeight: '500',
     lineHeight: 26,
-    color: '#605F5F'
+    color: '#605F5F',
   },
   inputTxt: {
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 28,
-    color: '#858585'
+    color: '#858585',
   },
   multilineInput: {
     height: 150, // Longer height for message box

@@ -4,7 +4,7 @@ import AllInputs from './AllInputs';
 import AllBtn from '../components/AllBtn';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const BottomSheet = ({panelRef, navigation}) => {
+const BottomSheet = ({panelRef, navigation, isEditing}) => {
   return (
     <View>
       <View style={styles.container}>
@@ -14,7 +14,7 @@ const BottomSheet = ({panelRef, navigation}) => {
             source={require('../../assets/cross.png')}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 18, fontWeight: '600'}}>Add Experience</Text>
+        <Text style={{fontSize: 18, fontWeight: '600'}}>{isEditing ? 'Edit Education' : 'Add Education'}</Text>
       </View>
       <AllInputs title="Enter Institution Name" input="Institude Name" />
       <AllInputs title="Enter Degree Name" input="Select Degree Name" />

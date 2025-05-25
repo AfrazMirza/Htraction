@@ -10,8 +10,9 @@ import About from './About';
 import MyActivity from './MyActivity';
 import { useState } from 'react';
 import Programs from './Programs';
+import WorkExp from '../components/WorkExp';
 
-const Tabs = () => {
+const Tabs = ({ screenType }) => {
 
     const [selectedTab, setSelectedTab] = useState("About")
   return (
@@ -22,16 +23,21 @@ const Tabs = () => {
         <Text style={[styles.txt, selectedTab === "About" && styles.activeTab]}>About</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={()=> setSelectedTab("MyActivity")} >
-        <Text style={[styles.txt, selectedTab === "MyActivity" && styles.activeTab]}>MyActivity</Text>
+        <Text style={[styles.txt, selectedTab === "MyActivity" && styles.activeTab]}>{screenType === 'MyProfile' ? 'MyActivity' : 'Activity'}</Text>
       </TouchableOpacity>
-      <TouchableOpacity  onPress={()=> setSelectedTab("Programs")} >
+      <TouchableOpacity  onPress={()=> setSelectedTab("WorkExp")} >
+        <Text style={[styles.txt, selectedTab === "WorkExp" && styles.activeTab]}>Education</Text>
+      </TouchableOpacity>
+      {/* <TouchableOpacity  onPress={()=> setSelectedTab("Programs")} >
         <Text style={[styles.txt, selectedTab === "Programs" && styles.activeTab]}>Programs</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
     <View style={styles.contentContainer}>
         {selectedTab === "About" && <About />}
-        {selectedTab === "MyActivity" && <MyActivity/>}
-        {selectedTab === "Programs" && <Programs/>}
+        {selectedTab === "MyActivity" && <MyActivity screenType="MyProfile"/>}
+        {selectedTab === "MyActivity" && <MyActivity screenType="UserProfile"/>}
+        {/* {selectedTab === "Programs" && <Programs/>} */}
+        {selectedTab === "WorkExp" && <WorkExp/>}
       </View>
     </View>
   );

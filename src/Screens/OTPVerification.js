@@ -1,86 +1,35 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useState } from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import IdPass from '../components/IdPass';
 import AllBtn from '../components/AllBtn';
 import {OtpInput} from 'react-native-otp-entry';
-import { supabase } from '../lib/supabase';
-import BackArrow from '../components/BackArrow';
 
 const OTPVerification = ({route, navigation}) => {
   const {userEmail} =route.params;
-  const [otp, setOtp] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [resendLoading, setResendLoading] = useState(false);
-
-  const handleVerify = async () => {
-    if (!otp || otp.length !== 6) {
-      Alert.alert('Error', 'Please enter 6-digit code');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const { error } = await supabase.auth.verifyOtp({
-        email: userEmail,
-        token: otp,
-        type: 'recovery' // Critical for password reset
-      });
-
-      if (error) throw error;
-
-      // Navigate to password reset screen
-      navigation.navigate('SetPassword');
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendOTP = async () => {
-    try {
-      setResendLoading(true);
-      const { error } = await supabase.auth.signInWithOtp({
-        email: userEmail,
-        options: {
-          shouldCreateUser: false
-        }
-      });
-
-      if (error) throw error;
-
-      Alert.alert('Success', 'New OTP has been sent to your email');
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    } finally {
-      setResendLoading(false);
-    }
-  };
-
   return (
     <ScrollView>
       <View style={styles.view1}>
-        <BackArrow
+        {/* <BackArrow
         source={require('../../assets/backArrow.png')}
-        width={15}
-        height={15}/>
+        width={25}
+        height={25}/> */}
         <Image style={styles.img} source={require('../../assets/logo.png')} />
         <View style={styles.view1V1}>
           <Text style={styles.V2Txt1}>Verify your account</Text>
           <Text style={styles.V2Txt2}>
-            Enter 6 digits verification code we have send to
+            Enter 5 digits verification code we have send to
             <Text style={{color: '#FA4616'}}> {userEmail}</Text>
           </Text>
           <OtpInput
             focusColor="#FA4616"
             numberOfDigits={6}
-            onTextChange={text => setOtp(text)}
+            onTextChange={text => console.log(text)}
             theme={{
               containerStyle: styles.container,
               pinCodeTextStyle: styles.pinCodeText,
               pinCodeContainerStyle: styles.pinCodeContainer,
-              // focusedPinCodeContainerStyle: styles.activePinCodeContainer,
+              focusedPinCodeContainerStyle: styles.activePinCodeContainer,
               // pinCodeTextStyle: styles.pinCodeText,
               // focusStickStyle: styles.focusStick,
               // placeholderTextStyle: styles.placeholderText,
@@ -92,23 +41,15 @@ const OTPVerification = ({route, navigation}) => {
       </View>
       <View style={styles.view2}>
         <AllBtn
-          // title="Send OTP"
-          // onTab={() => {
-          //   navigation.navigate('SetPassword');
-          // }}
-          title={loading ? "Verifying..." : "Verify OTP"}
-        onTab={handleVerify}
-        disabled={loading}
+          title="Send OTP"
+          onTab={() => {
+            navigation.navigate('SetPassword');
+          }}
         />
-          <TouchableOpacity
-          onPress={handleResendOTP}
-          disabled={resendLoading}
-        >
         <Text style={styles.text}>
           If you don't receive OTP?
-          <Text style={[styles.resendText, resendLoading && styles.disabledResend]}>{resendLoading ? 'Sending...' : 'Resend OTP'}</Text>
+          <Text style={{color: '#FA4616', fontSize: 12}}>Resend OTP</Text>
         </Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -183,12 +124,4 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginBottom: 78,
   },
-  resendText: {
-    color: '#FA4616', 
-    fontSize: 12,
-    fontWeight: 'bold'
-  },
-  disabledResend: {
-    color: '#A4A4A4'
-  }
 });

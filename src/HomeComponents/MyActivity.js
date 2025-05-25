@@ -4,13 +4,13 @@ import Post from './Post';
 import Btns from './Btns';
 import Cards from './Cards';
 
-const MyActivity = () => {
+const MyActivity = ({screenType}) => {
   return (
     <View style={{flex: 1}}>
       <View>
-        <Text style={styles.txt}>My Activity</Text>
-        <Post />
-        <Btns />
+        <Text style={styles.txt}>{screenType === 'MyProfile' ? 'My Activity' : 'Activity'}</Text>
+        {screenType === 'MyProfile' && <Post />}
+        <Btns screenType={screenType} />
       </View>
       <Cards />
     </View>

@@ -18,8 +18,6 @@ const Home = () => {
       <View>
         <Post />
         <Btns/>
-
-      
       </View>
       <Cards />
   

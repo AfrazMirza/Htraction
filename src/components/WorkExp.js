@@ -49,6 +49,7 @@ const WorkExp = props => {
   ];
   const panelRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   return (
     <View style={{flex: 1, paddingVertical: 10}}>
       <View style={{}}>
@@ -58,17 +59,21 @@ const WorkExp = props => {
             justifyContent: 'space-between',
             // backgroundColor: 'red',
             paddingVertical: 10,
+            paddingHorizontal: 10,
           }}>
-          <Text style={{fontSize: 18, fontWeight: '600'}}>{props.title}</Text>
+          <Text style={{fontSize: 18, fontWeight: '600'}}>Education</Text>
           <TouchableOpacity
-            onPress={() => panelRef.current.open()}
+            onPress={() => {
+              panelRef.current.open();
+              setIsEditing(false);
+            }}
             style={styles.expBtn}>
             <Image
               style={{width: 8, height: 8}}
               source={require('../../assets/plusOrange.png')}
             />
             <Text style={{fontSize: 10, fontWeight: '600', color: '#FA4616'}}>
-              {props.experience}
+              Add Education
             </Text>
           </TouchableOpacity>
         </View>
@@ -126,7 +131,11 @@ const WorkExp = props => {
                   paddingVertical: 3,
                   // backgroundColor: 'red'
                 }}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    panelRef.current.open();
+                    setIsEditing(true);
+                  }}>
                   <Image
                     style={{width: 11.5, height: 10.9}}
                     source={item.edit}
@@ -152,7 +161,7 @@ const WorkExp = props => {
           container: {borderTopLeftRadius: 15, borderTopRightRadius: 15},
         }}>
         {/* <Text style={{ paddingVertical: 20 }}>Some random content</Text> */}
-        <BottomSheet panelRef={panelRef} />
+        <BottomSheet panelRef={panelRef} isEditing={isEditing}/>
       </RBSheet>
 
       {/*this model can show the popup on the screen wen the contact button is triggured every time*/}
@@ -160,38 +169,16 @@ const WorkExp = props => {
         animationType="fade"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-        >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            {/* <View style={{alignSelf: 'flex-end'}}>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Image
-                  style={{width: 14, height: 14}}
-                  source={require('../../assets/cross.png')}
-                />
-              </TouchableOpacity>
-            </View> */}
-            {/* <View
-              style={{
-                width: 64,
-                height: 64,
-                borderColor: '#85dbbf',
-                borderWidth: 7,
-                borderRadius: 50,
-                backgroundColor: '#10b981',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 10,
-              }}> */}
-              <Image
-                style={{width: 64, height: 64, marginBottom: 20,}}
-                source={require('../../assets/redAlert.png')}
-              />
-            {/* </View> */}
-            {/* <Text style={styles.modalTitle}>Contact Details Submitted!</Text> */}
+           
+            <Image
+              style={{width: 64, height: 64, marginBottom: 20}}
+              source={require('../../assets/redAlert.png')}
+            />
             <Text style={styles.modalMessage}>
-            Are you sure you want to delete this work experience record?
+              Are you sure you want to delete this education record?
             </Text>
 
             <View
@@ -202,11 +189,13 @@ const WorkExp = props => {
                 justifyContent: 'space-between',
               }}>
               {/* Close Button */}
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Cancle</Text>
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                style={styles.cancleBtn}>
+                <Text style={styles.cancleBtnTxt}>Cancle</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Delete</Text>
+              <TouchableOpacity style={styles.deleteBtn}>
+                <Text style={styles.deleteBtnTxt}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -273,8 +262,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 35,
     borderRadius: 10,
   },
-  closeButtonText: {
-    color: '#fff',
+  cancleBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  cancleBtnTxt: {
+    color: '#FA4616',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  deleteBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    backgroundColor: '#FA4616',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  deleteBtnTxt: {
+    color: '#FFF',
     fontSize: 16,
     fontWeight: '600',
   },

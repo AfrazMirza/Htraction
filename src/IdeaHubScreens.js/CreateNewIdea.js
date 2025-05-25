@@ -4,7 +4,9 @@ import AllInputs from '../HomeComponents/AllInputs';
 import AllBtn from '../components/AllBtn';
 import { useNavigation } from '@react-navigation/native';
 
-const CreateNewIdea = () => {
+const CreateNewIdea = ({route}) => {
+  const { mode } = route.params || {};
+  const headerTitle = mode === 'edit' ? 'Edit Idea' : 'Create New Idea';
     const navigation = useNavigation();
   return (
     <ScrollView>
@@ -24,7 +26,7 @@ const CreateNewIdea = () => {
             color: '#ffffff',
             paddingHorizontal: 10,
           }}>
-          Create New Idea
+          {headerTitle}
         </Text>
       </View>
       <Text style={styles.txt}>Details</Text>

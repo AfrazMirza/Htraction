@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -44,6 +44,8 @@ import NewMessage from '../Screens1/NewMessage';
 import linking from '../config/deepLinking';
 import AuthHandler from '../components/AuthHandler';
 import { supabase } from '../lib/supabase';
+import UserProfile from '../Screens1/UserProfile';
+// import UserProfile from '../Screens1/UserProfile';
 
 // Bottom Tab Navigation
 const BottomTabs = () => {
@@ -138,6 +140,7 @@ const BottomTabs = () => {
 const CustomDrawerContent = props => {
   const {navigation} = props;
  const [userName, setUserName] = useState('Guest');
+ const [signOut, setSignOut] = useState(false);
    useEffect(() => {
       // Fetch user data when component mounts
       const fetchUser = async () => {
@@ -298,9 +301,7 @@ const CustomDrawerContent = props => {
           </TouchableOpacity>
           {/* <View style={{alignSelf: 'center', marginTop: 150}}> */}
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignIn');
-            }}
+            onPress={() => setSignOut(true)}
             style={{
               alignSelf: 'center',
               marginTop: 150,
@@ -326,6 +327,44 @@ const CustomDrawerContent = props => {
           </TouchableOpacity>
           {/* </View> */}
         </View>
+
+         {/*this model can show the popup on the screen wen the contact button is triggured every time*/}
+                      <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={signOut}
+                        onRequestClose={() => setSignOut(false)}
+                        >
+                        <View style={styles.modalBackground}>
+                          <View style={styles.modalContainer}>
+                              <Image
+                                style={{width: 64, height: 64, marginBottom: 20,}}
+                                source={require('../../assets/redAlert.png')}
+                              />
+                            {/* </View> */}
+                            {/* <Text style={styles.modalTitle}>Contact Details Submitted!</Text> */}
+                            <Text style={styles.modalMessage}>
+                            Are you sure you want to sign out from this App?
+                            </Text>
+                
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                // backgroundColor: 'lime',
+                                gap: 10,
+                                justifyContent: 'space-between',
+                              }}>
+                              {/* Close Button */}
+                              <TouchableOpacity onPress={() => setSignOut(false)} style={styles.cancleBtn}>
+                                <Text style={styles.cancleBtnTxt}>Cancle</Text>
+                              </TouchableOpacity>
+                              <TouchableOpacity  onPress={() => {navigation.navigate('SignIn')}} style={styles.deleteBtn}>
+                                <Text style={styles.deleteBtnTxt}>Sign-Out</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </View>
+                        </View>
+                      </Modal>
       </DrawerContentScrollView>
     </View>
   );
@@ -387,6 +426,7 @@ const AppNavigator = () => {
         {/* <Stack.Screen name='IdeaHub' component={IdeaHub}/> */}
         <Stack.Screen name="GroupChats" component={GroupChats} />
         {/* <Stack.Screen name="Setting" component={Setting} /> */}
+        <Stack.Screen name="UserProfile" component={UserProfile}/>
 
         {/* AuthHandler for the supabase  */}
         <Stack.Screen name="AuthHandler" component={AuthHandler} />
@@ -447,5 +487,63 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 27,
     color: '#333',
+  },
+   // css model for signOut button
+   modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // ✅ Semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5, // ✅ Shadow for Android
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 26,
+    color: '#333333',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cancleBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  cancleBtnTxt: {
+    color: '#FA4616',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  deleteBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    backgroundColor: '#FA4616',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  deleteBtnTxt: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
