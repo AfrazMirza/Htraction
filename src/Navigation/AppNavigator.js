@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -37,6 +37,13 @@ import Setting from '../Screens2/Setting';
 // Drawer Screens
 import MyProfile from '../Screens1/MyProfile';
 import CompanyDetails from '../Screens2/CompanyDetails';
+import Connections from '../Screens1/Connections';
+import NewMessage from '../Screens1/NewMessage';
+
+// deeplinking the supabase database to our react native app 
+import linking from '../config/deepLinking';
+import AuthHandler from '../components/AuthHandler';
+import { supabase } from '../lib/supabase';
 
 // Bottom Tab Navigation
 const BottomTabs = () => {
@@ -53,16 +60,16 @@ const BottomTabs = () => {
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           borderLeftColor: '#FFE5D5',
-    borderLeftWidth: 0.2,
-    borderRightColor: '#FFE5D5',
-    borderRightWidth: 0.2,
+          borderLeftWidth: 0.2,
+          borderRightColor: '#FFE5D5',
+          borderRightWidth: 0.2,
           // borderTopColor: '#FFE5D5',
           // elevation: 0,
           // position: 'absolute',
           overflow: 'hidden',
           // paddingBottom: 10,
         },
-        
+
         tabBarIcon: ({focused}) => {
           let iconSource;
           let label;
@@ -130,6 +137,55 @@ const BottomTabs = () => {
 
 const CustomDrawerContent = props => {
   const {navigation} = props;
+ const [userName, setUserName] = useState('Guest');
+   useEffect(() => {
+      // Fetch user data when component mounts
+      const fetchUser = async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          
+          if (user) {
+            // Try to get the full name from the user_metadata first
+            const name = user.user_metadata?.full_name || 'User';
+            setUserName(name);
+            
+            // If not found in metadata, try to fetch from public.users table
+            if (!name || name === 'User') {
+              const { data, error } = await supabase
+                .from('users')
+                .select('full_name')
+                .eq('id', user.id)
+                .single();
+              
+              if (data && data.full_name) {
+                setUserName(data.full_name);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
+      };
+      
+      fetchUser();
+      
+      // Set up a listener for auth state changes
+      const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          const name = session.user.user_metadata?.full_name || 'User';
+          setUserName(name);
+        } else if (event === 'SIGNED_OUT') {
+          setUserName('Guest');
+        }
+      });
+      
+      return () => {
+        if (authListener?.unsubscribe) {
+          authListener.unsubscribe();
+        }
+      };
+    }, []);
+
   return (
     <View style={{flex: 1}}>
       {/* Close Button on Top Right */}
@@ -160,7 +216,7 @@ const CustomDrawerContent = props => {
               source={require('../../assets/KumarRohit.png')}
             />
             <View style={{justifyContent: 'center'}}>
-              <Text style={styles.name}>Kumar Rohit</Text>
+              <Text style={styles.name}>{userName}</Text>
               <Text style={styles.email}>Aspiring Entrepreneur</Text>
             </View>
           </View>
@@ -196,11 +252,11 @@ const CustomDrawerContent = props => {
           </TouchableOpacity>
 
           {/* 🔹 Drawer Item - Company Profile */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.drawerItem}
             onPress={() => navigation.navigate('CompanyProfile')}>
             {/* <Ionicons name="business-outline" size={24} color="#555" /> */}
-            <View
+          {/* <View
               style={{
                 backgroundColor: '#FA4616',
                 padding: 10,
@@ -216,7 +272,7 @@ const CustomDrawerContent = props => {
               source={require('../../assets/rightDetails.png')}
               style={[{width: 7, height: 12, marginLeft: 55}]}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* 🔹 Drawer Item - Settings */}
           <TouchableOpacity
@@ -242,7 +298,9 @@ const CustomDrawerContent = props => {
           </TouchableOpacity>
           {/* <View style={{alignSelf: 'center', marginTop: 150}}> */}
           <TouchableOpacity
-          onPress={()=> {navigation.navigate('SignIn')}}
+            onPress={() => {
+              navigation.navigate('SignIn');
+            }}
             style={{
               alignSelf: 'center',
               marginTop: 150,
@@ -295,7 +353,7 @@ const DrawerTabs = () => {
 const AppNavigator = () => {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName="SplashScreen1"
         screenOptions={{headerShown: false}}>
@@ -307,7 +365,8 @@ const AppNavigator = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="SetPassword" component={SetPassword} />
         <Stack.Screen name="OTPVerification" component={OTPVerification} />
-
+        <Stack.Screen name="Connections" component={Connections} />
+        <Stack.Screen name="NewMessage" component={NewMessage} />
         {/* Bottom Tab Screens */}
         {/* <Stack.Screen name='Home' component={Home}/> */}
         <Stack.Screen name="MainTabs" component={BottomTabs} />
@@ -324,10 +383,13 @@ const AppNavigator = () => {
 
         {/* Idea hub Screen  */}
         <Stack.Screen name="EditIdeaDetails" component={EditIdeaDetails} />
-        <Stack.Screen name="CreateNewIdea" component={CreateNewIdea}/>
+        <Stack.Screen name="CreateNewIdea" component={CreateNewIdea} />
         {/* <Stack.Screen name='IdeaHub' component={IdeaHub}/> */}
         <Stack.Screen name="GroupChats" component={GroupChats} />
         {/* <Stack.Screen name="Setting" component={Setting} /> */}
+
+        {/* AuthHandler for the supabase  */}
+        <Stack.Screen name="AuthHandler" component={AuthHandler} />
       </Stack.Navigator>
     </NavigationContainer>
   );

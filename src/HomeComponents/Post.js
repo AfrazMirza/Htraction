@@ -17,26 +17,26 @@ const Post = () => {
         />
         </View>
         <View style={styles.subContainer}>
-          <TouchableOpacity style={styles.subContainerBtn1}>
+          <TouchableOpacity onPress={()=> panelRef.current.open()} style={styles.subContainerBtn1}>
             <Text style={styles.txt1}>Share Something</Text>
           </TouchableOpacity>
           <View style={styles.subContainerView}>
             <TouchableOpacity>
               <Image
-                style={{width: 12.75, height: 12,}}
-                source={require('../../assets/galleryIcon.png')}
+                style={{width: 18, height: 18,}}
+                source={require('../../assets/imageUploader.png')}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Image
                 style={{width: 15.6, height: 9}}
                 source={require('../../assets/videoIcon.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity>
               <Image
-                style={{width: 12.3, height: 11.9}}
-                source={require('../../assets/smilyIcon.png')}
+                style={{width: 20, height: 20}}
+                source={require('../../assets/happyFace.png')}
               />
             </TouchableOpacity>
           </View>
@@ -47,7 +47,7 @@ const Post = () => {
       </View>
       <RBSheet
         ref={panelRef}
-        height={800} // Adjust height as needed
+        height={450} // Adjust height as needed
         openDuration={250}
         closeOnDragDown={false}
         customStyles={{
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   subContainerView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     marginHorizontal: 10,
     width: 59.11,
     height: 11.77,

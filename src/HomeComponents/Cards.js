@@ -23,6 +23,7 @@ const Cards = () => {
       share: require('../../assets/share.png'),
       save: require('../../assets/save.png'),
       mainImage: require('../../assets/mainImage.png'),
+      txt: 'The Lorem Ipsum we know today is derived from parts of the first book Liber Primus and its discussion on hedonism, the words of which had been altered, added and removed to make it nonsensical and improper Latin. It is not known exactly when the text gained its current',
       text1: '20K',
       text2: '20K',
       text3: 'Share',
@@ -42,6 +43,7 @@ const Cards = () => {
       share: require('../../assets/share.png'),
       save: require('../../assets/save.png'),
       mainImage: require('../../assets/mountain.png'),
+      txt: 'The Lorem Ipsum we know today is derived from parts of the first book Liber Primus and its discussion on hedonism, the words of which had been altered, added and removed to make it nonsensical and improper Latin. It is not known exactly when the text gained its current',
       text1: '20K',
       text2: '20K',
       text3: 'Share',
@@ -60,6 +62,7 @@ const Cards = () => {
       message: require('../../assets/message.png'),
       share: require('../../assets/share.png'),
       save: require('../../assets/save.png'),
+      txt: 'The Lorem Ipsum we know today is derived from parts of the first book Liber Primus and its discussion on hedonism, the words of which had been altered, added and removed to make it nonsensical and improper Latin. It is not known exactly when the text gained its current',
       mainImage: require('../../assets/paintings.png'),
       text1: '20K',
       text2: '20K',
@@ -79,6 +82,7 @@ const Cards = () => {
       message: require('../../assets/message.png'),
       share: require('../../assets/share.png'),
       save: require('../../assets/save.png'),
+      txt: 'The Lorem Ipsum we know today is derived from parts of the first book Liber Primus and its discussion on hedonism, the words of which had been altered, added and removed to make it nonsensical and improper Latin. It is not known exactly when the text gained its current',
       mainImage: require('../../assets/mainImage.png'),
       text1: '20K',
       text2: '20K',
@@ -115,6 +119,9 @@ const [modalVisible, setModalVisible] = useState(false);
             </View>
             <View>
               <Image style={styles.mainImage} source={item.mainImage} />
+            </View>
+            <View>
+              <Text style={{fontSize: 12, paddingVertical: 7, lineHeight: 18}}>{item.txt}</Text>
             </View>
             <View
               style={{

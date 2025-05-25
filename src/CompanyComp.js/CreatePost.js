@@ -20,10 +20,30 @@ const CreatePost = ({panelRef}) => {
         <Text style={{fontSize: 18, fontWeight: '500'}}>Kumar Rohit!</Text>
       </View>
       <AllInputs  input="Share Something" customeStyle={{textAlignVertical: 'top'}} isMultiline={true} />
-      <Text style={styles.txt}>Contact Details</Text>
+      <View style={styles.subContainerView}>
+                  <TouchableOpacity>
+                    <Image
+                      style={{width: 28, height: 28,}}
+                      source={require('../../assets/imageUploader.png')}
+                    />
+                  </TouchableOpacity>
+                  {/* <TouchableOpacity>
+                    <Image
+                      style={{width: 15.6, height: 9}}
+                      source={require('../../assets/videoIcon.png')}
+                    />
+                  </TouchableOpacity> */}
+                  <TouchableOpacity>
+                    <Image
+                      style={{width: 29, height: 29}}
+                      source={require('../../assets/happyFace.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
+      {/* <Text style={styles.txt}>Contact Details</Text>
       <AllInputs title="Your Question" input="Your Question" />
       <AllInputs title="Option 1" input="Your Question" />
-      <AllInputs title="Option 2" input="Your Question" />
+      <AllInputs title="Option 2" input="Your Question" /> */}
       {/* <AllInputs title="Start Month and Year" input="MM/YYYY" /> */}
       <AllBtn
         title="Post"
@@ -53,5 +73,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         paddingTop: 10,
         color: '#383838',
+      },
+      subContainerView: {
+        flexDirection: 'row',
+        gap: 10,
+        paddingVertical: 15,
+        marginHorizontal: 10,
+        // width: 59.11,
+        // height: 11.77,
       },
 })

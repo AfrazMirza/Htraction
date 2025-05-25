@@ -16,30 +16,33 @@ const WorkExp = props => {
     {
       id: 1,
       image: require('../../assets/mainImage.png'),
-      name: 'Company Name',
-      work: 'UI UX Designer - Full-time',
-      exp: '03/2021 - Present 4 yr',
-      details: 'Lorem Ipsum is simply dummy text of the...',
+      institude: 'Career Point University Kota',
+      degree: 'MCA',
+      start: '03/2021',
+      end: '08/2025',
+      // details: 'Lorem Ipsum is simply dummy text of the...',
       edit: require('../../assets/edit.png'),
       delete: require('../../assets/delete.png'),
     },
     {
       id: 2,
       image: require('../../assets/mainImage.png'),
-      name: 'Company Name',
-      work: 'UI UX Designer - Full-time',
-      exp: '03/2021 - Present 4 yr',
-      details: 'Lorem Ipsum is simply dummy text of the...',
+      institude: 'Career Point University Kota',
+      degree: 'MCA',
+      start: '03/2021',
+      end: '08/2025',
+      // details: 'Lorem Ipsum is simply dummy text of the...',
       edit: require('../../assets/edit.png'),
       delete: require('../../assets/delete.png'),
     },
     {
       id: 3,
       image: require('../../assets/mainImage.png'),
-      name: 'Company Name',
-      work: 'UI UX Designer - Full-time',
-      exp: '03/2021 - Present 4 yr',
-      details: 'Lorem Ipsum is simply dummy text of the...',
+      institude: 'Career Point University Kota',
+      degree: 'MCA',
+      start: '03/2021',
+      end: '08/2025',
+      // details: 'Lorem Ipsum is simply dummy text of the...',
       edit: require('../../assets/edit.png'),
       delete: require('../../assets/delete.png'),
     },
@@ -97,19 +100,22 @@ const WorkExp = props => {
                   //   backgroundColor: 'red',
                 }}>
                 <Text style={{fontSize: 14, fontWeight: '700'}}>
-                  {item.name}
+                  {item.institude}
                 </Text>
                 <Text style={{fontSize: 13, fontWeight: '500'}}>
-                  {item.work}
+                  {item.degree}
                 </Text>
                 <Text style={{fontSize: 13, fontWeight: '500'}}>
-                  {item.exp}
+                  {item.start}
                 </Text>
-                <Text
+                <Text style={{fontSize: 13, fontWeight: '500'}}>
+                  {item.end}
+                </Text>
+                {/* <Text
                   style={{fontSize: 12, fontWeight: '400'}}
                   numberOfLines={1}>
                   {item.details}
-                </Text>
+                </Text> */}
               </View>
               <View
                 style={{
@@ -139,7 +145,7 @@ const WorkExp = props => {
       />
       <RBSheet
         ref={panelRef}
-        height={800} // Adjust height as needed
+        height={630} // Adjust height as needed
         openDuration={250}
         closeOnDragDown={false}
         customStyles={{

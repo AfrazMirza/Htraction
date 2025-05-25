@@ -17,9 +17,11 @@ const styles = StyleSheet.create({
     //     height: 15,
     // },
     container: {
-        alignItems:'flex-start',
+        alignSelf:'flex-start',
         justifyContent: 'center',
+        paddingLeft: 10,
+        paddingTop: 40,
         // margin: 100,
-        backgroundColor:'black',
+        // backgroundColor:'black',
     }
 })

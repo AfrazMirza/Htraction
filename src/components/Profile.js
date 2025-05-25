@@ -1,9 +1,104 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
+import { supabase } from '../lib/supabase';
 
 const Profile = () => {
   const navigation = useNavigation();
+  // const [userName, setUserName] = useState('Guest');
+  const [profileData, setProfileData] = useState({});
+
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     const { data: { user } } = await supabase.auth.getUser();
+  //     if (!user) return;
+
+  //     const { data, error } = await supabase
+  //       .from('profiles')
+  //       .select('*')
+  //       .eq('id', user.id)
+  //       .single();
+  //     if (error) console.error('Profile fetch error:', error);
+  //     if (data)  {
+  //       console.log('Profile data:', data);
+  //       setProfileData(data);
+  //     }
+  //   };
+    
+  //   fetchProfile();
+  //   const unsubscribe = navigation.addListener('focus', fetchProfile);
+  //   return unsubscribe;
+  // }, [navigation]);
+
+
+  //  useEffect(() => {
+  //     // Fetch user data when component mounts
+  //     const fetchUser = async () => {
+  //       try {
+  //         const { data: { user } } = await supabase.auth.getUser();
+          
+  //         if (user) {
+  //           // Try to get the full name from the user_metadata first
+  //           const name = user.user_metadata?.full_name || 'User';
+  //           setUserName(name);
+            
+  //           // If not found in metadata, try to fetch from public.users table
+  //           if (!name || name === 'User') {
+  //             const { data, error } = await supabase
+  //               .from('users')
+  //               .select('full_name')
+  //               .eq('id', user.id)
+  //               .single();
+              
+  //             if (data && data.full_name) {
+  //               setUserName(data.full_name);
+  //             }
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.error('Error fetching user:', error);
+  //       }
+  //     };
+      
+  //     fetchUser();
+      
+  //     // Set up a listener for auth state changes
+  //     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+  //       if (event === 'SIGNED_IN' && session?.user) {
+  //         const name = session.user.user_metadata?.full_name || 'User';
+  //         setUserName(name);
+  //       } else if (event === 'SIGNED_OUT') {
+  //         setUserName('Guest');
+  //       }
+  //     });
+      
+  //     return () => {
+  //       if (authListener?.unsubscribe) {
+  //         authListener.unsubscribe();
+  //       }
+  //     };
+  //   }, []);
+  
+  const fetchProfile = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('full_name, entrepreneur_type')
+      .eq('id', user.id)
+      .single();
+
+    if (error) console.error('Profile fetch error:', error);
+    else setProfileData(data);
+  };
+
+  useEffect(() => {
+    fetchProfile();
+    const unsubscribe = navigation.addListener('focus', fetchProfile);
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.containerTxt}>My Profile</Text>
@@ -13,42 +108,47 @@ const Profile = () => {
           source={require('../../assets/KumarRohit.png')}
         />
         <View style={styles.container2}>
+          <View>
           <Text style={{fontSize: 18, fontWeight: '600', color: '#FA4616'}}>
-            Kumar Rohit
+          {profileData.full_name ||'UserName'}
           </Text>
           <Text style={{fontSize: 14, fontWeight: '400', color: '#444444'}}>
-            Aspiring Entrepreneur
+            {profileData.entrepreneur_type || 'Aspiring Entrepreneur'}
           </Text>
+          </View>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('EditProfile');
               // navigation.navigate('ContactDetails');
               // navigation.navigate('PageDetails');
               // navigation.navigate('CompanyDetails');
-            }}
+             }}
             style={styles.btn}>
             <Text style={styles.btntxt}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
+         <TouchableOpacity>
+         <Image style={{paddingRight: 4, width: 20, height: 20}} source={require('../../assets/3dots.png')}/>
+         </TouchableOpacity>
       </View>
       <View style={styles.container3}>
-        <View style={styles.followView}>
+        {/* <TouchableOpacity style={styles.followView}>
           <Text style={styles.txt1}>122</Text>
 
           <Text style={styles.txt2}>Followers</Text>
-        </View>
-        <View style={styles.followView}>
+        </TouchableOpacity> */}
+        <TouchableOpacity style={styles.followView}>
           <Text style={styles.txt1}>67</Text>
-          <Text style={styles.txt2}>Following</Text>
-        </View>
-        <View style={styles.followView}>
-          <Text style={styles.txt1}>13</Text>
           <Text style={styles.txt2}>Post</Text>
-        </View>
-        <View style={styles.followView}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Connections')} style={styles.followView}>
+          <Text style={styles.txt1}>13</Text>
+          <Text style={styles.txt2}>Connections</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.followView}>
           <Text style={styles.txt1}>10</Text>
           <Text style={styles.txt2}>Ideas</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -79,12 +179,12 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   container2: {
-    backgroundColor: 'white', width: 230, height: 91
+    backgroundColor: 'white', width: 190, height: 91
   },
   container3: {
     flexDirection: 'row',
     marginTop: '15',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     // width: 340,
     // height: 57,
     // backgroundColor: 'white',
@@ -104,7 +204,7 @@ const styles = StyleSheet.create({
   },
   txt2: {
     fontSize: 16,
-    fontWeight: '400',
+    fontWeight: '700',
     color: '#333333',
   },
   btn: {

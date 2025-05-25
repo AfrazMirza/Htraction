@@ -1,25 +1,32 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useState } from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import AllBtn from '../components/AllBtn';
 import IdPass from '../components/IdPass';
-import {ScrollView} from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {supabase} from '../lib/supabase';
 
-const SetPassword = () => {
-  
-    const [password, setPassword] = useState('')
-    const [passwordError, setPasswordError] = useState(false)
-      const [confirmPass, setConfirmPass] = useState('')
-      const [confirmPassError, setConfirmPassError] = useState(false)
+const SetPassword = ({route}) => {
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPass, setConfirmPass] = useState('');
+  const [confirmPassError, setConfirmPassError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const setPass = () => {
-    let isValid = true
+  const setPass = async () => {
+    let isValid = true;
     setPasswordError('');
-    setConfirmPass('');
+    setConfirmPassError('');
 
     if (password.trim() === '') {
-      setPasswordError('Please enter password')
+      setPasswordError('Please enter password');
       isValid = false;
     } else {
       // Check password strength
@@ -27,14 +34,15 @@ const SetPassword = () => {
       const hasNumber = /[0-9]/.test(password);
       const hasSpecialChar = /[!@#$%&*]/.test(password);
       const isLongEnough = password.length >= 8;
-      
+
       let errorMessages = [];
-      
+
       if (!isLongEnough) errorMessages.push('at least 8 characters');
       if (!hasUpperCase) errorMessages.push('one uppercase letter');
       if (!hasNumber) errorMessages.push('one number');
-      if (!hasSpecialChar) errorMessages.push('one special character (!@#$%&*)');
-      
+      if (!hasSpecialChar)
+        errorMessages.push('one special character (!@#$%&*)');
+
       if (errorMessages.length > 0) {
         setPasswordError(`Password must contain: ${errorMessages.join(', ')}`);
         isValid = false;
@@ -44,16 +52,38 @@ const SetPassword = () => {
     if (confirmPass.trim() === '') {
       setConfirmPassError('Please confirm your password');
       isValid = false;
-  } else if (password !== confirmPass) {
+    } else if (password !== confirmPass) {
       setConfirmPassError('Passwords do not match');
       isValid = false;
-  }
-    if(isValid){
-      navigation.navigate('SignIn')
     }
+    // if(isValid){
+    //   navigation.navigate('SignIn')
+    // }
 
+    if (isValid) {
+      try {
+        setLoading(true);
+        const {error} = await supabase.auth.updateUser({
+          password: password.trim(),
+        });
 
-  }
+        if (error) throw error;
+
+        Alert.alert('Success', 'Password updated!',
+          [
+            {
+                text: 'OK',
+                onPress: () => navigation.navigate('SignIn')
+            }
+        ]
+        );
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.view1}>
@@ -69,19 +99,23 @@ const SetPassword = () => {
           height={25}
           title="Password"
           isPassword={true}
-          showError={(text)=>setPassword(text)}
+          showError={(text) => setPassword(text)}
         />
-         {passwordError ? <Text style={styles.errorTxt}>{passwordError}</Text> : null}
+       {passwordError && <Text style={styles.errorTxt}>{passwordError}</Text>}
         <IdPass
           source={require('../../assets/password.png')}
           width={25}
           height={25}
           title="Confirm password"
           isPassword={true}
-          showError={(text)=>setConfirmPass(text)}
+          showError={text => setConfirmPass(text)}
         />
-         {confirmPassError ? <Text style={styles.errorTxt}>{confirmPassError}</Text> : null}
-        <AllBtn onTab={setPass} title="Set Password" />
+        {confirmPassError && <Text style={styles.errorTxt}>{confirmPassError}</Text>}
+        <AllBtn
+          title={loading ? 'Updating...' : 'Set Password'}
+          onTab={setPass}
+          disabled={loading}
+        />
       </View>
     </ScrollView>
   );
@@ -119,7 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: 78,
   },
   errorTxt: {
-    color: '#FA4616', 
-    marginHorizontal: 15
-  }
+    color: '#FA4616',
+    marginHorizontal: 15,
+  },
 });

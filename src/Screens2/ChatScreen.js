@@ -105,7 +105,7 @@ const ChatScreen = () => {
               Personal
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => setActiveMainTab('company')}
             style={[
               styles.button,
@@ -123,7 +123,7 @@ const ChatScreen = () => {
             >
               Company
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <SearchBox />
       </View>

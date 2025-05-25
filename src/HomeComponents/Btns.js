@@ -22,7 +22,7 @@ const Btns = () => {
           Announcement
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{justifyContent: 'center'}}>
+      <TouchableOpacity style={{justifyContent: 'center'}}> 
         <Text style={{color: '#9D9B9A'}}>--------------</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{justifyContent: 'center'}}>

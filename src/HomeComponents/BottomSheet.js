@@ -16,11 +16,12 @@ const BottomSheet = ({panelRef, navigation}) => {
         </TouchableOpacity>
         <Text style={{fontSize: 18, fontWeight: '600'}}>Add Experience</Text>
       </View>
-      <AllInputs title="Enter Job Title" input="Job Title" />
-      <AllInputs title="Employment Type" input="Select your Employment Type" />
-      <AllInputs title="Enter Company Name" input="Search and Select Company" />
+      <AllInputs title="Enter Institution Name" input="Institude Name" />
+      <AllInputs title="Enter Degree Name" input="Select Degree Name" />
+      <AllInputs title="Field of Study" input="Enter Field of Study" />
       <AllInputs title="Start Month and Year" input="MM/YYYY" />
-      <AllInputs title="Description" input="Description" customeStyle={{textAlignVertical: 'top'}} isMultiline={true} />
+      <AllInputs title="Graduation Date" input="MM/YYYY" />
+      {/* <AllInputs title="Description" input="Description" customeStyle={{textAlignVertical: 'top'}} isMultiline={true} /> */}
       <AllBtn
         title="Add"
         onTab={() => {

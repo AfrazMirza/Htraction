@@ -18,7 +18,7 @@ const InviteUser = ({panelRef}) => {
       <View style={{paddingVertical: 15, paddingHorizontal: 15}}>
         <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 26, color: '#383838'}}>Please enter their email address below, and we'll send them an invitation to join us. Thank you for helping us grow and connect!</Text>
       </View>
-      <AllInputs title="Subject" input="Subject" />
+      <AllInputs title="Email Address" input="Email Address" />
       <AllBtn
         title="Send Invite"
         onTab={() => {
