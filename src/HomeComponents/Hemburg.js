@@ -6,62 +6,16 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheet from './BottomSheet';
 import InviteUser from './InviteUser';
 import { useNavigation } from '@react-navigation/native';
-import { supabase } from '../lib/supabase';
+import { useUser } from '../Context/UserContext';
+// import { supabase } from '../lib/supabase';
 
 const Hemburg = () => {
   const panelRef = useRef(null)
   const navigation = useNavigation();
-  const [userName, setUserName] = useState('Guest');
+
+  const { userName } = useUser();
   
   console.log("naaaa", navigation);
-  
-  useEffect(() => {
-    // Fetch user data when component mounts
-    const fetchUser = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (user) {
-          // Try to get the full name from the user_metadata first
-          const name = user.user_metadata?.full_name || 'User';
-          setUserName(name);
-          
-          // If not found in metadata, try to fetch from public.users table
-          if (!name || name === 'User') {
-            const { data, error } = await supabase
-              .from('users')
-              .select('full_name')
-              .eq('id', user.id)
-              .single();
-            
-            if (data && data.full_name) {
-              setUserName(data.full_name);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-    
-    fetchUser();
-    
-    // Set up a listener for auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const name = session.user.user_metadata?.full_name || 'User';
-        setUserName(name);
-      } else if (event === 'SIGNED_OUT') {
-        setUserName('Guest');
-      }
-    });
-    
-    return () => {
-      if (authListener?.unsubscribe) {
-        authListener.unsubscribe();
-      }
-    };
-  }, []);
 
   // This opens the drawer when click on the profile image
   const openDrawer = () => {

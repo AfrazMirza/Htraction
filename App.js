@@ -6,14 +6,16 @@ import { ThemeProvider } from './src/Context/ThemeContext';
 import AuthHandler from './src/components/AuthHandler';
 // import { ThemePorvider } from './src/ThemeChanger/DarkLightMode';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { UserProvider } from './src/Context/UserContext';
 
 const App = () => {
   return (
     <>    
+    <UserProvider>
     <ThemeProvider>
     <AppNavigator/>
     </ThemeProvider>
+    </UserProvider>
     </>
 
   );

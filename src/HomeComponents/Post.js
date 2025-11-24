@@ -1,29 +1,31 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheet from './BottomSheet';
-import CreatePost from '../CompanyComp.js/CreatePost';
+import CreatePost from '../CompanyComp/CreatePost';
 
 const Post = () => {
   const panelRef = useRef(null);
   return (
     <>
-    {/* // <View style={{alignItems: 'center', backgroundColor: 'purple'}}> */}
+      {/* // <View style={{alignItems: 'center', backgroundColor: 'purple'}}> */}
       <View style={styles.container}>
         <View>
-        <Image
-          style={{height: 31, width: 33, marginRight: 8}}
-          source={require('../../assets/profile1.png')}
-        />
+          <Image
+            style={{height: 31, width: 33, marginRight: 8}}
+            source={require('../../assets/profile1.png')}
+          />
         </View>
         <View style={styles.subContainer}>
-          <TouchableOpacity onPress={()=> panelRef.current.open()} style={styles.subContainerBtn1}>
+          <TouchableOpacity
+            onPress={() => panelRef.current.open()}
+            style={styles.subContainerBtn1}>
             <Text style={styles.txt1}>Share Something</Text>
           </TouchableOpacity>
           <View style={styles.subContainerView}>
             <TouchableOpacity>
               <Image
-                style={{width: 18, height: 18,}}
+                style={{width: 18, height: 18}}
                 source={require('../../assets/imageUploader.png')}
               />
             </TouchableOpacity>
@@ -40,14 +42,16 @@ const Post = () => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={()=> panelRef.current.open()} style={styles.subContainerBtn2}>
+          <TouchableOpacity
+            onPress={() => panelRef.current.open()}
+            style={styles.subContainerBtn2}>
             <Text style={styles.txt2}>Post</Text>
           </TouchableOpacity>
         </View>
       </View>
       <RBSheet
         ref={panelRef}
-        height={450} // Adjust height as needed
+        height={470} // Adjust height as needed
         openDuration={250}
         closeOnDragDown={false}
         customStyles={{
@@ -56,7 +60,7 @@ const Post = () => {
         {/* <Text style={{ paddingVertical: 20 }}>Some random content</Text> */}
         <CreatePost panelRef={panelRef} />
       </RBSheet>
-    {/* // </View> */}
+      {/* // </View> */}
     </>
   );
 };

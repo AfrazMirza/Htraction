@@ -187,7 +187,7 @@ const Profile = () => {
           <Text style={styles.txt1}>13</Text>
           <Text style={styles.txt2}>Connections</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.followView}>
+        <TouchableOpacity onPress={() => navigation.navigate('Ideas')} style={styles.followView}>
           <Text style={styles.txt1}>10</Text>
           <Text style={styles.txt2}>Ideas</Text>
         </TouchableOpacity>

@@ -45,6 +45,8 @@ import linking from '../config/deepLinking';
 import AuthHandler from '../components/AuthHandler';
 import { supabase } from '../lib/supabase';
 import UserProfile from '../Screens1/UserProfile';
+import Ideas from '../Screens1/Ideas';
+import EditCompanyProfile from '../Screens1/EditCompanyProfile';
 // import UserProfile from '../Screens1/UserProfile';
 
 // Bottom Tab Navigation
@@ -255,11 +257,11 @@ const CustomDrawerContent = props => {
           </TouchableOpacity>
 
           {/* 🔹 Drawer Item - Company Profile */}
-          {/* <TouchableOpacity
+           <TouchableOpacity
             style={styles.drawerItem}
             onPress={() => navigation.navigate('CompanyProfile')}>
             {/* <Ionicons name="business-outline" size={24} color="#555" /> */}
-          {/* <View
+          <View
               style={{
                 backgroundColor: '#FA4616',
                 padding: 10,
@@ -275,7 +277,7 @@ const CustomDrawerContent = props => {
               source={require('../../assets/rightDetails.png')}
               style={[{width: 7, height: 12, marginLeft: 55}]}
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
           {/* 🔹 Drawer Item - Settings */}
           <TouchableOpacity
@@ -405,6 +407,7 @@ const AppNavigator = () => {
         <Stack.Screen name="SetPassword" component={SetPassword} />
         <Stack.Screen name="OTPVerification" component={OTPVerification} />
         <Stack.Screen name="Connections" component={Connections} />
+        <Stack.Screen name="Ideas" component={Ideas}/>
         <Stack.Screen name="NewMessage" component={NewMessage} />
         {/* Bottom Tab Screens */}
         {/* <Stack.Screen name='Home' component={Home}/> */}
@@ -414,6 +417,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Notification" component={Notification} />
         {/* <Stack.Screen name='MyProfile' component={MyProfile}/> */}
         <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="EditCompanyProfile" component={EditCompanyProfile} />
         {/* <Stack.Screen name='CompanyProfile' component={ComponyProfile}/> */}
         <Stack.Screen name="ProgramDetails" component={ProgramDetails} />
         <Stack.Screen name="ContactDetails" component={ContactDetails} />

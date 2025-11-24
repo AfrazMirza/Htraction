@@ -2,30 +2,74 @@ import {Image, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-nati
 import React, { useRef, useState } from 'react';
 import ContactUs from './ContactUs';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 // import {useNavigation} from '@react-navigation/native';
 
 const ZepTechCompany = () => {
+  const navigation = useNavigation()
     const panelRef = useRef(null)
       const [modalVisible, setModalVisible] = useState(false); 
           const [activeOption, setActiveOption] = useState(null);
+           const [profileData, setProfileData] = useState({});
+            const editProfilePic = useRef(null)
+const [deleteProfile, setDeleteProfile] = useState(false);
+
+const EditCompanyProfile = ({panelRef}) => {
+    return (
+      <View>
+        <View style={styles.editProfileContainer}>
+          <TouchableOpacity onPress={() => panelRef.current.close()}>
+            <Image
+              style={{width: 14, height: 14}}
+              source={require('../../assets/cross.png')}
+            />
+          </TouchableOpacity>
+          <Text style={{fontSize: 18, fontWeight: '600'}}>Upload Profile</Text>
+        </View>
+        <View style={{paddingVertical: 15, paddingHorizontal: 15}}>
+          <TouchableOpacity style={{flexDirection: 'row', paddingVertical: 10, alignItems: 'center'}}>
+          <Image style={{width: 22.5, height: 18}} source={require('../../assets/uploadProfile.png')}/>
+          <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 26, color: '#383838', paddingLeft: 5}}>View or edit profile photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setDeleteProfile(true)} style={{flexDirection: 'row', paddingVertical: 10, alignItems: 'center'}}>
+            <Image style={{width: 22, height: 22}} source={require('../../assets/deleteProfile.png')}/>
+          <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 26, color: '#383838', paddingLeft: 5}}>Delete profile</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+  
+
   return (
     <View style={styles.container}>
       <Text style={styles.containerTxt}>Company Profile</Text>
       <View style={styles.container1}>
-        <View style={{flex:0.3, alignItems: 'center'}}>
-        <Image
-          style={{width: 100, height: 101}}
-          source={require('../../assets/KumarRohit.png')}
-        />
-        </View>
+        <View style={{ position: 'relative', width: 100, height: 101 }}>
+              <Image
+                 style={{width: 100, height: 101}}
+                 source={require('../../assets/detailsImg.png')}
+               />
+               <TouchableOpacity    style={{
+             position: 'absolute',
+             bottom: 5,
+             right: 2,
+             backgroundColor: '#FA4616',
+             padding: 6,
+             borderRadius: 20,
+           }}
+           onPress={() => editProfilePic.current.open()}>
+                 <Image style={{width: 12, height: 12}} source={require('../../assets/editProfile.png')}/>
+               </TouchableOpacity>
+              </View>
         <View style={styles.container2}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{fontSize: 18, fontWeight: '600', color: '#FA4616'}}>
+          <View style={{flexDirection: 'row', width: '220', justifyContent: 'space-between'}}>
+            <Text style={{fontSize: 18, fontWeight: '600',}}>
               ZepTech
             </Text>
             <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
-              style={{paddingRight: 4, width: 20, height: 20}}
+              style={{paddingLeft: 4, width: 20, height: 20}}
               source={require('../../assets/3dots.png')}
             />
             </TouchableOpacity>
@@ -52,18 +96,18 @@ const ZepTechCompany = () => {
 
           <Text style={styles.txt2}>Followers</Text>
         </View>
-        <View style={styles.followView}>
+        <TouchableOpacity onPress={() => navigation.navigate('Connections')} style={styles.followView}>
           <Text style={styles.txt1}>67</Text>
-          <Text style={styles.txt2}>Following</Text>
-        </View>
+          <Text style={styles.txt2}>Connections</Text>
+        </TouchableOpacity>
         <View style={styles.followView}>
           <Text style={styles.txt1}>13</Text>
           <Text style={styles.txt2}>Post</Text>
         </View>
-        <View style={styles.followView}>
+        {/* <View style={styles.followView}>
           <Text style={styles.txt1}>0</Text>
           <Text style={styles.txt2}>Announcement</Text>
-        </View>
+        </View> */}
       </View>
       <View
         style={{
@@ -90,15 +134,15 @@ const ZepTechCompany = () => {
                            onRequestClose={() => setModalVisible(false)} // if we want Close modal on back press we can comment this line also.
                          >
                            <TouchableOpacity 
-                       style={styles.modalBackground}
+                       style={styles.modalBackgroundEditBtn}
                        activeOpacity={1}
                        onPress={() => setModalVisible(false)}>
-                       <View style={styles.modalContainer}>
+                       <View style={styles.modalContainerEditBtn}>
                          <TouchableOpacity 
                            style={[
-                             styles.optionButton,  {borderTopLeftRadius: 10,
+                             styles.optionButtonEditBtn,  {borderTopLeftRadius: 10,
                                borderTopRightRadius: 10,},
-                             activeOption === 'copy' && styles.optionButtonActive
+                             activeOption === 'copy' && styles.optionButtonActiveEditBtn
                            ]}
                            onPressIn={() => setActiveOption('copy')}
                            onPressOut={() => setActiveOption(null)}
@@ -142,16 +186,14 @@ const ZepTechCompany = () => {
                          
                          <TouchableOpacity 
                            style={[
-                             styles.optionButton,  {borderBottomLeftRadius: 10,
+                             styles.optionButtonEditBtn,  {borderBottomLeftRadius: 10,
                                borderBottomRightRadius: 10,},
-                             activeOption === 'edit' && styles.optionButtonActive
+                             activeOption === 'edit' && styles.optionButtonActiveEditBtn
                            ]}
                            onPressIn={() => setActiveOption('edit')}
                            onPressOut={() => setActiveOption(null)}
                            onPress={() => {
-                             setModalVisible(false);
-                             // Handle delete post
-                           }}
+              navigation.navigate('EditCompanyProfile');}}
                            activeOpacity={1}>
                            <Text>Edit profile</Text>
                          </TouchableOpacity>
@@ -171,6 +213,58 @@ const ZepTechCompany = () => {
                 {/* <Text style={{ paddingVertical: 20 }}>Some random content</Text> */}
                 <ContactUs panelRef={panelRef}/>
               </RBSheet>
+
+              {/* edit company profile RBSheet */}
+              <RBSheet
+          ref={editProfilePic}
+          height={185} // Adjust height as needed
+          openDuration={250}
+          closeOnDragDown={false}
+          customStyles={{
+            container: { borderTopLeftRadius: 15, borderTopRightRadius: 15,  },
+          }}
+        >
+          {/* <Text style={{ paddingVertical: 20 }}>Some random content</Text> */}
+          <EditCompanyProfile panelRef={editProfilePic}/>
+        </RBSheet>
+
+         {/*this model can show the popup on the screen wen the contact button is triggured every time*/}
+              <Modal
+                animationType="fade"
+                transparent={true}
+                visible={deleteProfile}
+                onRequestClose={() => setDeleteProfile(false)}
+                >
+                <View style={styles.modalBackground}>
+                  <View style={styles.modalContainer}>
+                      <Image
+                        style={{width: 64, height: 64, marginBottom: 20,}}
+                        source={require('../../assets/redAlert.png')}
+                      />
+                    {/* </View> */}
+                    {/* <Text style={styles.modalTitle}>Contact Details Submitted!</Text> */}
+                    <Text style={styles.modalMessage}>
+                    Are you sure you want to delete profile image?
+                    </Text>
+        
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        // backgroundColor: 'lime',
+                        gap: 10,
+                        justifyContent: 'space-between',
+                      }}>
+                      {/* Close Button */}
+                      <TouchableOpacity onPress={() => setDeleteProfile(false)} style={styles.cancleBtn}>
+                        <Text style={styles.cancleBtnTxt}>Cancle</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.deleteBtn}>
+                        <Text style={styles.deleteBtnTxt}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
     </View>
   );
 };
@@ -193,7 +287,9 @@ const styles = StyleSheet.create({
   },
   container1: {
     flexDirection: 'row',
-    flex:0.2
+    flex:0.2,
+     marginHorizontal: 15,
+    gap: 14,
     // backgroundColor: 'red',
     // width: 345,
     // height: 101,
@@ -216,7 +312,14 @@ const styles = StyleSheet.create({
   followView: {
     // width: 72,
     // height: 55,
-    alignItems: 'center',
+    // flexDirection: 'row',
+    marginTop: '15',
+    justifyContent: 'space-around',
+    // width: 340,
+    // height: 57,
+    // backgroundColor: 'white',
+    marginHorizontal: 15,
+    // alignItems: 'center',
     // justifyContent: 'space-evenly',
     // backgroundColor: 'lightgreen',
   },
@@ -227,7 +330,7 @@ const styles = StyleSheet.create({
   },
   txt2: {
     fontSize: 16,
-    fontWeight: '400',
+    fontWeight: '700',
     color: '#333333',
   },
   btn: {
@@ -247,16 +350,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FA4616',
   },
-  modalBackground: {
+  modalBackgroundEditBtn: {
     flex: 1,
     // backgroundColor: 'rgba(0, 0, 0, 0.5)', // ✅ Semi-transparent background
     // justifyContent: 'center',
     alignItems: 'flex-end',
-    marginRight: 13,
-    marginTop: 133
+    marginRight: 8,
+    marginTop: 140
   },
-  modalContainer: {
-    width: '40%',
+  modalContainerEditBtn: {
+    width: '35%',
     backgroundColor: '#fff',
     borderRadius: 10,
     // padding: 2,
@@ -271,13 +374,81 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     // elevation: 5, // ✅ Shadow for Android
   },
-  optionButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+  optionButtonEditBtn: {
+    paddingVertical: 4,
+    paddingHorizontal: 6,
     width: '100%',
     // borderRadius: 10,
   },
-  optionButtonActive: {
+  optionButtonActiveEditBtn: {
     backgroundColor: '#FFF3ED',
   },
+ editProfileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 13,
+    paddingHorizontal: 12,
+    paddingTop: 20,
+    paddingBottom: 18,
+    backgroundColor: '#FFE5D5',
+  },
+  // css model for delete the profile image
+  modalBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // ✅ Semi-transparent background
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '85%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5, // ✅ Shadow for Android
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 26,
+    color: '#333333',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cancleBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  cancleBtnTxt: {
+    color: '#FA4616',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  deleteBtn : {
+    borderWidth: 1,
+    borderColor: "#FA4616",
+    backgroundColor: '#FA4616',
+    paddingVertical: 12,
+    paddingHorizontal: 35,
+    borderRadius: 10,
+  },
+  deleteBtnTxt: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+
 });
